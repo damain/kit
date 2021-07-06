@@ -13,4 +13,16 @@ export default function (test, is_dev) {
 			assert.equal(await page.textContent('#nested-error-message'), 'error.message: nope');
 		}
 	);
+
+	test(
+		`renders the closest error page if page doesn't exist`,
+		'/errors/nested-error-page',
+		async ({ page, clicknav }) => {
+			await clicknav('[href="/errors/nested-error-page/missing"]');
+
+			assert.equal(await page.textContent('h1'), 'Nested error page');
+			assert.equal(await page.textContent('#nested-error-status'), 'status: 500');
+			assert.equal(await page.textContent('#nested-error-message'), 'error.message: nope');
+		}
+	);
 }
